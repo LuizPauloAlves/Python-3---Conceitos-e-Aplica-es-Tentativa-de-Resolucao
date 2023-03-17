@@ -1,0 +1,9 @@
+N = int(input("Digite N:"))
+i = 1
+Total = 0
+while i <= N:
+    Nd = float(input("Valor {} digitado:".format(i)))
+    if Nd >= 0:
+        Total += Nd
+    i += 1
+print("\nSoma dos valores gerados = {}".format(Total))
