@@ -9,3 +9,4 @@ for i in range(2000):
     else:
         w = str(n)
         arq.write(w)
+arq.close()

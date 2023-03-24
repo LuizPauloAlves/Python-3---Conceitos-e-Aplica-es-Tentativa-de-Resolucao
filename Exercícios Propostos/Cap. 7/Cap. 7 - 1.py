@@ -19,3 +19,4 @@ for i in range(2,N+1):
     if EPrimo(i) != 0:
         n = str(i)+' é primo\n'
         arq.write(n)
+arq.close()

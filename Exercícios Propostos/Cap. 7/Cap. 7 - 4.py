@@ -54,3 +54,4 @@ for i in textNew:
     else:
         x = str(i)
         arq.write(x)
+arq.close()
