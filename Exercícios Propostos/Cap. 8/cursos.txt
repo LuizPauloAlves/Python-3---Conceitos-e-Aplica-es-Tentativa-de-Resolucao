@@ -1,0 +1,9 @@
+11;Treino aerobico;110.00
+12;Combo 1: musculacao + aerobico;180.00
+15;Natacao;180.00
+22;Pilates;165.00
+25;Combo 2: pilates + aerobico;214.00
+30;Crossfit;180.00
+41;Muay Thai;140.00
+42;Jiu Jitsu;140.00
+43;Boxe;140.00
