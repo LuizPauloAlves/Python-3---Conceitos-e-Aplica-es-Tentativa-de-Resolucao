@@ -1,43 +1,50 @@
 import sqlite3
 import time
+
+
 def alterar():
-    qual = int(input("Qual musica quer alterar:"))
+    qual = input("Qual musica quer alterar:")
     print("O que você quer alterar na musica:")
     print("1.Nome\n2.Artista\n3.Album\n4.Ano\n5.Arquivo")
     n = input("Digite sua mudança:")
-    sqlalterar = ["nomemus = ?", "artista = ?", "album = ?", "ano = ?", "arquivo = ?"]
+    sqlalterar = ["nomemus = ", "artista = ", "album = ", "ano = ", "arquivo = "]
     NP = ["Nome", "Artista", "Album", "Ano", "Arquivo"]
-    sql = "UPDATE Musicas SET "
+
     N = []
-    while n != "" and len(N)<=5:
+    while n != "" and len(N) <= 5:
         n = int(n)
-        N.append(n-1)
-        sql = sql + sqlalterar[n-1]
+        N.append(n - 1)
         n = input("Digite sua mudança:")
-        if n != "":
-            sql = sql + ", "
-    sql = sql + " Where nummusica = ?"
-    print(sql)
     print("Digite os novos ", end="")
     for i in N:
         print(NP[i], end=", ")
     print("separando por virgula (,):")
     Ler = input()
     d = Ler.split(',')
+    sql = "UPDATE Musicas SET "
+    for i in range(len(d)):
+        sql = sql + sqlalterar[N[i]]+ '"' + d[i] + '"'
+        if i != len(d)-1:
+            sql += ", "
 
+    sql = sql + " Where nummusica = "+ qual
+    print(sql)
     try:
-        cursor.execute(sql, (d[:len(NP)], qual))
+        cursor.execute(sql)
         conector.commit()
     except:
         print("Dados Invalidos")
     else:
         print("Dados inseridos com sucesso")
 
+
 def excluir():
     return "Deixa para depois"
 
+
 def exibir():
     return "Deixa para depois"
+
 
 def inserir():
     sql = """INSERT INTO Musicas (nomemus, artista, album, ano, arquivo)
@@ -53,10 +60,11 @@ def inserir():
     except:
         print("Dados Invalidos")
     else:
-        for i in range(1,4):
-            print("."*i,end="")
+        for i in range(1, 4):
+            print("." * i, end="")
             time.sleep(1)
         print("Dados inseridos com sucesso")
+
 
 conector = sqlite3.connect("musicas.db")
 cursor = conector.cursor()
