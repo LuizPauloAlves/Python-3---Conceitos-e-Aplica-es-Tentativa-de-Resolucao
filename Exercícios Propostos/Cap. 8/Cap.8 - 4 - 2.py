@@ -8,9 +8,7 @@ def alterar():
     print("1.Nome\n2.Artista\n3.Album\n4.Ano\n5.Arquivo")
     n = input("Digite sua mudança:")
     sqlalterar = ["nomemus = ", "artista = ", "album = ", "ano = ", "arquivo = "]
-    NP = ["Nome", "Artista", "Album", "Ano", "Arquivo"]
-
-    N = []
+    NP, N = ["Nome", "Artista", "Album", "Ano", "Arquivo"], []
     while n != "" and len(N) <= 5:
         n = int(n)
         N.append(n - 1)
@@ -26,7 +24,6 @@ def alterar():
         sql = sql + sqlalterar[N[i]]+ '"' + d[i] + '"'
         if i != len(d)-1:
             sql += ", "
-
     sql = sql + " Where nummusica = "+ qual
     print(sql)
     try:
@@ -43,8 +40,18 @@ def excluir():
 
 
 def exibir():
-    return "Deixa para depois"
-
+    sql = "select * from Musicas"
+    cursor.execute(sql)
+    dados = cursor.fetchall()
+    print("\nConsulta ao Banco de dados 'academia.db'\n")
+    print("Dados da tabela 'Agenda'")
+    print('-' * 170)
+    print("{:^7} {:^50} {:^25} {:^50} {:<5} {:>25}".format("Código", "Nome da Musica", "Artista", "Album", "Ano", "Nome do arquivo"))
+    print('- ' * 85)
+    for d in dados:
+        print("{:^7} {:^50} {:^25} {:^50} {:<5} {:>25}".format(d[0], d[1], d[2], d[3], d[4], d[5]))
+    print('-' * 170)
+    print("Encontrados {} registros\n".format(len(dados)))
 
 def inserir():
     sql = """INSERT INTO Musicas (nomemus, artista, album, ano, arquivo)
@@ -65,7 +72,7 @@ def inserir():
             time.sleep(1)
         print("Dados inseridos com sucesso")
 
-
+#codigo principal
 conector = sqlite3.connect("musicas.db")
 cursor = conector.cursor()
 print("O que deseja:\n1.Adicionar uma musica\n2.Alterar uma musica\n3.Excluir uma musica")
