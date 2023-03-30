@@ -105,3 +105,7 @@ while N != '':
     print("O que deseja agora:\n1.Adicionar uma musica\n2.Alterar uma musica\n3.Excluir uma musica")
     print("4.Exibir as musicas atuais")
     N = input("Digite sua escolha:")
+
+conector.commit()
+cursor.close()
+conector.close()
