@@ -77,14 +77,22 @@ def generateDataDay(day, salesAmount):
         a = a + '\n'
         file.write(a)
 
+def workSaturday():
+    print("Would you like to count Saturdays as well?")
+    saturdays = input("1.Yes\n2.No\n")
+    if saturdays == "1":
+        return 6
+    return 5
+
 showPresentation()
 dateStart, dateEnd, amount = getInputs()
 product = readFileProduct()
 file = open("VENDAS.txt",'w',encoding='UTF-8')
 oneDay = datetime.timedelta(days=1)
+saturdays = workSaturday()
 counter = dateStart
 while counter <= dateEnd:
-    if counter.weekday() < 5:
+    if counter.weekday() < saturdays:
         generateDataDay(counter, amount)
     counter = counter + oneDay
 file.close()

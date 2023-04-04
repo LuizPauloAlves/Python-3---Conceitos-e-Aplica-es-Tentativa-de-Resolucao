@@ -43,16 +43,9 @@ def readFileProduct():
     print("Reading of PRODUTOS.TXT ok. were read {} Lines".format(len(dictionaryProduct)))
     return dictionaryProduct
 
-def generateSalesAmount(codeProduct):
-    global product
-    raffle = randint(1,100)
-    if raffle <= 60:
-        q = randint(1,10)
-    elif raffle <= 85:
-        q = randint(11,25)
-    else:
-        q = randint(26,400)
-    return q
+def generateSalesAmount(saleAmount):
+    raffle = randint(round(saleAmount/2),2*saleAmount)
+    return raffle
 
 def generateUnitPriceSale(codeProduct):
     global product
@@ -68,7 +61,7 @@ def generateDataDay(day, salesAmount):
     for x in range(salesAmount):
         iproduct = randint(0, len(product)-1)
         codeProduct = L[iproduct]
-        amountItem = generateSalesAmount(codeProduct)
+        amountItem = generateSalesAmount(salesAmount)
         unitPrice = generateUnitPriceSale(codeProduct)
         a = str(day.year)+';'+str(day.month)+';'+str(day.day)
         a = a + ';' + str(codeProduct)
