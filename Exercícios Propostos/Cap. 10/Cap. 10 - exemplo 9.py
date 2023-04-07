@@ -17,11 +17,11 @@ def createDBTournament(nameTournament, teamList):
     cursor.close()
     connector.close()
 
-def recordTournamentName(nameTournament, amountShift):
+def recordTournamentName(nameTournament, numberShift):
     connector = sqlite3.connect('tournament.db')
     cursor = connector.cursor()
     sql = 'INSET INTO tournament (nametournament , shift) VALUES (?,?)'
-    cursor.execute(sql, (nameTournament, amountShift))
+    cursor.execute(sql, (nameTournament, numberShift))
     connector.commit()
     cursor.close()
     connector.close()

@@ -2,8 +2,8 @@ def createNewTournament():
     nameTournament = input('\nName of new Tournament:')
     if not validateTournament(nameTournament):
         return None
-    amountShift = getAmountShift()
-    if amountShift == 0:
+    numberShift = getNumberShift()
+    if numberShift == 0:
         return None
     topScreen('Create a New Tournament')
     showLine('New Tournament: '+ nameTournament, 64)
@@ -14,5 +14,5 @@ def createNewTournament():
     teamList = getNameTeam()
     if teamList:
         createDBTournament(nameTournament, teamList)
-        recordTournamentName(nameTournament, amountShift)
-        generateRecordGame(nameTournament, amountShift, teamList)
+        recordTournamentName(nameTournament, numberShift)
+        generateRecordGame(nameTournament, numberShift, teamList)

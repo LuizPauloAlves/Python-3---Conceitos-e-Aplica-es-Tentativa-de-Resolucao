@@ -7,15 +7,15 @@ def validateTournament(nameTournament):
     else:
         return True
 
-def getAmountTournament():
+def getNumberShift():
     while True:
-        print('Type the amount of shifts (1 or 2):')
+        print('Type the number of shifts (1 or 2):')
         print('Type 0 for cancel')
-        amount = input('How many shifts? >>>')
+        number = input('How many shifts? >>>')
         try:
-            amount = int(amount)
+            number = int(number)
         except:
-            print('Invalid Input {}'.format(amount))
+            print('Invalid Input {}'.format(number))
         else:
-            if 0 <= amount <= 2:
-                return amount
+            if 0 <= number <= 2:
+                return number

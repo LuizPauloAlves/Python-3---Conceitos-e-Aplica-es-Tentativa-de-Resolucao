@@ -1,28 +1,28 @@
-def CalcPramsTorneio():
-    global Times, Turnos
-    Qtde = len(Times)
-    if Qtde % 2 == 0:
-        NRod = (Qtde - 1) * Turnos
+def calculationsTournamentParameter():
+    global team, shift
+    number = len(team)
+    if number % 2 == 0:
+        numberRound = (number - 1) * shift
     else:
-        NRod = Qtde * Turnos
-    NJog = (Qtde - 1) * Qtde // 2 * Turnos
-    return Qtde, NRod, NJog
+        numberRound = number * shift
+    numberGame = (number - 1) * number // 2 * shift
+    return number, numberRound, numberGame
 
-def ExibeTimes():
-    global Times
-    Qtde, NRod, NJog = CalcPramsTorneio()
-    ExibeLinha("Times deste Torneio " + Torneio, 64)
-    cont = 1
+def showTeams():
+    global team
+    number, numberRound, numberGame = calculationsTournamentParameter()
+    showLine("Teams of this Tournament" + tournament, 64)
+    counter = 1
     s = ""
-    for t in Times:
+    for t in team:
         s = s + "{:<15}".format(t[0])
-        if cont % 4 == 0:
-            ExibeLinha(s, 64)
+        if counter % 4 == 0:
+            showLine(s, 64)
             s = ""
-        cont += 1
+        counter += 1
         if s != "":
-            ExibeLinha(s, 64)
-        ExibeLinha("", 64)
-        s = "No de Rodadas: {} - No de Jogos: {}"
-        ExibeLinha(s.format(NRod, NJog), 64)
-        print("-" * LargTela)
+            showLine(s, 64)
+        showLine("", 64)
+        s = "Number of Rounds: {} - Number of Games: {}"
+        showLine(s.format(numberRound, numberGame), 64)
+        print("-" * widthScreen)

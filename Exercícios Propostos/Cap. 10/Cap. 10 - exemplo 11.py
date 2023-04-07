@@ -1,32 +1,32 @@
-def GerenciaTorneio(t):
-    global Times, Torneio, Turnos
-    Torneio = t["nome"]
-    Turnos = t["turnos"]
-    Times = CarregaTimes()
-    Qtde, NRod, NJog = CalcPramsTorneio()
+def manageTournament(t):
+    global team, tournament, shift
+    tournament = t["name"]
+    shift = t["shift"]
+    team = loadTeams()
+    number, numberRound, numberGame = calculationsTournamentParameter()
     while True:
-        TopoTela("Gerenciamento de Torneio")
-        ExibeTimes()
-        ExibeClassificacao()
-        print("Opções: ")
-        print(" (.) Para ver uma rodada digite seu número.")"
-        print("     Rodadas Válidas de 1 a {}".format(Nrod))
-        print(" (G) Grava o Torneio em HTML")
-        print(" (E) Exclui o Torneio")
-        print(" (S) Voltar ao Menu Principal")
-        opc = input("sua opção? >>> ")
-        opc = opc.upper()
-        if opc == "N":
-            NovoTorneio()
-        elif opc.isnumeric():
-            n = int(opc)
-        if 1 <= n <= NRod:
-            GerenciaRodada(n)
-        elif opc == "G":
-            GravaHTML()
-        elif opc == "E":
-            if ExcluiTorneio(Torneio):
+        topScreen("Manage Tournoment")
+        showTeams()
+        showRank()
+        print("Options: ")
+        print(" (.) To view a round enter its number.")"
+        print("     Rounds Valid from 1 to {}".format(numberRound))
+        print(" (R) Record tournament in HTML")
+        print(" (D) Delete tournament")
+        print(" (B) Back to Main Menu")
+        option = input("your option? >>> ")
+        option = option.upper()
+        if option == "N":
+            newTournoment()
+        elif option.isnumeric():
+            n = int(option)
+        if 1 <= n <= numberRound:
+            manageRounds(n)
+        elif option == "R":
+            recordHTML()
+        elif option == "D":
+            if deleteTournament(tournament):
                 break
-        elif opc == "S":
+        elif option == "B":
             break
-    del(Times, Torneio, Turnos)
+    del(team, tournament, shift)
