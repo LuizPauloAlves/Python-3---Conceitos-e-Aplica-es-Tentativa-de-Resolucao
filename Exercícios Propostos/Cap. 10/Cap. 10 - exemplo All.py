@@ -155,8 +155,8 @@ def createDBTournament(nameTournament, teamList):
         CREATE TABLE games(
         numgame INT NOT NULL PRIMARY KEY ASC,
         numrod INT,
-        team1 TEXT, gol1 INT,
-        team2 TEXT, gol2 INT)'''
+        team1 TEXT, goals1 INT,
+        team2 TEXT, goals2 INT)'''
     cursor.execute(sql)
     cursor.close()
     connector.close()
@@ -194,7 +194,7 @@ def generateRecordGame(nameTournament, numberShift, teamList):
     conector = sqlite3.connect(nameTournament + ".db")
     cursor = conector.cursor()
     sql = '''
-        insert into jogos (numjogo, numrod, team1, team2) values (?, ?, ?, ?)
+        insert into games (numgame, numrod, team1, team2) values (?, ?, ?, ?)
     '''
     for numberGames, games in game.items():
         cursor.execute(sql, (numberGames, games["round"],
@@ -332,7 +332,7 @@ def readGames():
     cursor = connector.cursor()
     sql = """
         SELECT * FROM games
-        WHERE gol1 IS NOT NULL ORDER BY numgame
+        WHERE goals1 IS NOT NULL ORDER BY numgame
     """
     cursor.execute(sql)
     G = cursor.fetchall()
@@ -396,7 +396,7 @@ def directConfrontation(a, b):
     connector = sqlite3.connect(tournament + '.db')
     cursor = connector.cursor()
     sql = """
-        SELECT * FROM games WHERE gol1 IS NOT NULL AND
+        SELECT * FROM games WHERE goals1 IS NOT NULL AND
         team1 = :teamA AND team2 = :teamB
     """
     cursor.execute(sql)
@@ -410,7 +410,7 @@ def directConfrontation(a, b):
         elif G[3] < G[5]:
             pointB += 3
     sql = """
-            SELECT * FROM games WHERE gol1 IS NOT NULL AND
+            SELECT * FROM games WHERE goals1 IS NOT NULL AND
             team1 = :teamB AND team2 = :teamA
         """
     cursor.execute(sql)
@@ -458,9 +458,6 @@ def manageRounds(numberRound):
                 games = getGamesRound(numberRound)
 
 #exemplo 18
-import sqlite3
-
-
 def getGamesRound(numberRound):
     global tournament
     connector = sqlite3.connect(tournament + '.db')
@@ -486,19 +483,114 @@ def showGames(games):
     return gRound
 
 #exemplo 19
-
+def processRoundEntry(option, gamesRound):
+    option =  option.replace(" ", "")
+    L = option.split(",")
+    if len(L) != 2 and len(L) != 3:
+        return "Invalid Input"
+    if len(L) == 2:
+        if L[0].isnumeric() and L[1] == "clean":
+            game = int(L[0])
+            if game in gamesRound:
+                cleanGame(game)
+                return None
+            else:
+                return "Another Round Game"
+        else:
+            return "Invalid Input"
+    if len(L) == 3:
+        try:
+            game = int(L[0])
+            goals1 = int(L[1])
+            goals2 = int(L[2])
+            if game in gamesRound:
+                updateGame(game, goals1, goals2)
+            else:
+                return "Another Round Game"
+        except:
+            return "Invalid Input"
+        finally:
+            return None
 
 #exemplo 20
+import sqlite3
 
+
+def cleanGame(game):
+    global tournament
+    connector = sqlite3.connect(tournament + ".db")
+    cursor = connector.cursor()
+    sql = """
+        UPDATE games SET goals1 = NULL, goals2 = NULL
+        WHERE numgame = ?
+    """
+    cursor.execute(sql, (game,))
+    connector.commit()
+    cursor.close()
+    connector.close()
+
+def updateGame(game, goals1, goals2):
+    global tournament
+    connector = sqlite3.connect(tournament + ".db")
+    cursor = connector.cursor()
+    slq = """
+        UPDATE games SET goals1 = ?, goals2= ?
+        WHERE numgame = ?
+    """
+    cursor.execute(sql, (goals1, goals2, game))
+    connector.commit()
+    cursor.close()
+    connector.close()
 
 #exemplo 21
+import sqlite3
 
+
+def deleteTournament(tournament):
+    print("\n"*3)
+    showLine("Confirm Exclusion From Tournament " + tournament, 40)
+    print("Option: ")
+    print("    (C) for Confirm")
+    print("    any other key to return")
+    option = input("your option? >>> ")
+    option = option.upper()
+    if option == "C":
+        connector = sqlite3.connect("tournament.db")
+        cursor = connector.cursor()
+        sql = "DELETE FROM tournament WHERE nametournament = '" + \
+            tournament + "'"
+        print(tournament)
+        print(sql)
+        stop("-"*58)
+        cursor.execute(sql)
+        connector.commit()
+        cursor.close()
+        connector.close()
+        os.remove(tournament + ".db")
+        return True
+    else:
+        return False
 
 #exemplo 22
-
-
-#exemplo 23
-
-
-#exemplo 24
-
+def recordHTML():
+    global team, tournament
+    today = date.today()
+    today = "{}/{}/{}".format(today.day, today.month, today.year)
+    buildRank()
+    sfmt = "<tr><td>{}</td><td style=’text-align:left’>{}</td>" + \
+            "<td>{}</td>"*8 + "</tr>"
+    position = 1
+    table = ""
+    for teams in team:
+        data = (position,) + tuple(teams)
+        table = table + sfmt.format(*data)
+        position += 1
+    file = open("gabarito.html", "r", encoding="UTF-8")
+    html = file.read()
+    file.close;
+    html = html.replace("<...NomeTorneio...>", tournament)
+    html = html.replace("<...today...>", today)
+    html = html.replace("<...table...>", table)
+    file = open(tournament+".html", "w", encoding="UTF-8")
+    file.write(html)
+    file.close()
